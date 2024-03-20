@@ -6,22 +6,28 @@ on:
       - main
 
 jobs:
-  build:
+  simple_job:
     runs-on: ubuntu-latest
-    
-    retry:
-      max-runs: 3
-      # Menunda retry selama 10 detik setelah kegagalan sebelumnya
-      # Anda dapat menyesuaikan sesuai kebutuhan
-      delay: 10s
-    
+
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v2
-      
-    - name: Run a script
-      run: |
-        # Contoh skrip yang mungkin gagal
-        echo "Hello"
-        exit 1
-        
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Run Simple Script
+        run: |
+          # Contoh perintah sederhana yang dijalankan dalam skrip
+          echo "Hello, World!"
+          # Simulasikan kesalahan dengan mengeluarkan status exit 1
+          exit 1
+
+  retry_job:
+    runs-on: ubuntu-latest
+    needs: simple_job
+    if: failure()
+
+    steps:
+      - name: Retry Job
+        uses: actions/steps/retry@v2
+        with:
+          attempts: 3 # Mengulangi pekerjaan hingga 3 kali jika terjadi kesalahan
+          
