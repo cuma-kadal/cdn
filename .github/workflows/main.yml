@@ -1,0 +1,27 @@
+name: Simple Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    retry:
+      max-runs: 3
+      # Menunda retry selama 10 detik setelah kegagalan sebelumnya
+      # Anda dapat menyesuaikan sesuai kebutuhan
+      delay: 10s
+    
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+      
+    - name: Run a script
+      run: |
+        # Contoh skrip yang mungkin gagal
+        echo "Hello"
+        exit 1
+        
